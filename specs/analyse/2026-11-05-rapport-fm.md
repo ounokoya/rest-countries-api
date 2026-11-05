@@ -11,8 +11,15 @@ Reproduites en local : `html-validate` (préréglage recommandé sans les règle
 | R3 | HTML, accessibilité (`empty-heading`, 2) : titres vides `<h1 id="country-name">` (fiche) et `<h2>` du gabarit de carte | ✅ Juste dans le HTML servi, même s'ils sont remplis avant d'être affichés | Texte par défaut dans les deux titres, remplacé par le nom du pays |
 | R4 | JavaScript (`no-unsafe-optional-chaining`) : `(el.selectedOptions[0]?.text).trim()` dans `tests/helpers.js` | ✅ Juste (fichier de test, mais FM lit tout le dépôt) | Lecture sans chaînage optionnel |
 
-## Suite donnée : v1.0.1 (2026-11-05, en local)
+## Suite donnée : v1.0.1 (2026-11-05)
 
-- R1, R3 : commit `fix(html)` ; R4 et test de garde « Règles FM — html-validate » (rouge avant les correctifs) : commit `test` ; 73 / 73 en local ; tag `v1.0.1`.
-- À faire avec l'accord de Koya (SDL-FM 1.4.0, point 4) : push, déploiement, tests en ligne, puis « Regenerate report » (gratuit sans rapport IA). Attendu : 1 remarque (R2, gardée).
+- R1, R3 : commit `fix(html)` ; R4 et test de garde « Règles FM — html-validate » (rouge avant les correctifs) : commit `test` ; 73 / 73 en local et en ligne ; tag `v1.0.1`, poussé et déployé (accord de Koya).
 - Aucun changement visuel : pas de « Regenerate screenshot ».
+
+## Regénération du rapport (SDL-FM 1.4.0)
+
+| Date | Version relue par FM | Résultat |
+|---|---|---|
+| 2026-11-05 | v1.0.0 (soumission) | Vérifications automatiques : 4 remarques (R1 à R4) ; pas de rapport IA (aucun crédit) |
+| 2026-11-05 | v1.0.1 | « Regenerate report » (gratuit, sans rapport IA) : **1 remarque** (Accessibility 0, HTML 1, CSS 0, JavaScript 0) — R2, gardée par Koya |
+| plus tard | v1.0.1 | Rapport IA avec un crédit mensuel, après le Multi-step form (ordre du crédit) |
