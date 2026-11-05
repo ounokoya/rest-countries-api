@@ -1,0 +1,52 @@
+// Accueil : liste des pays, recherche, filtre, annonces (spec §5)
+
+import { formatNumber, list, normalize } from './data.js'
+import { detailHash } from './router.js'
+import { showMessage } from './messages.js'
+
+const FIRST_SCREEN = 8 // drapeaux chargés tout de suite (ADR-0009)
+
+export function createHome() {
+  const listEl = document.querySelector('#countries')
+  const count = document.querySelector('#count')
+  const message = document.querySelector('#home-message')
+  const template = document.querySelector('#card-template')
+  let items = []
+  let state = { search: '', region: '' }
+
+  function card(country, index) {
+    const li = template.content.firstElementChild.cloneNode(true)
+    const link = li.querySelector('a')
+    link.href = detailHash(country.alpha3Code)
+    const img = new Image(264, 160)
+    img.src = country.flags.svg
+    img.alt = ''
+    img.decoding = 'async'
+    if (index >= FIRST_SCREEN) img.loading = 'lazy'
+    img.className = 'size-full object-cover'
+    li.querySelector('[data-slot="flag"]').append(img)
+    const values = { name: country.name, population: formatNumber(country.population), region: list(country.region), capital: list(country.capital) }
+    for (const field of li.querySelectorAll('[data-field]')) field.textContent = values[field.dataset.field]
+    return { li, link, code: country.alpha3Code, key: normalize(country.name), region: country.region }
+  }
+
+  function render({ focusCode } = {}) {
+    const query = normalize(state.search)
+    const shown = items.filter((item) => (!state.region || item.region === state.region) && item.key.includes(query))
+    listEl.replaceChildren(...shown.map((item) => item.li))
+    count.textContent = shown.length === 1 ? '1 country' : `${shown.length} countries`
+    showMessage(message, shown.length ? null : 'empty')
+    if (focusCode) shown.find((item) => item.code === focusCode)?.link.focus()
+  }
+
+  return {
+    message,
+    setCountries(countries) {
+      items = countries.map(card)
+    },
+    show(route, options) {
+      state = { search: route.search, region: route.region }
+      render(options)
+    },
+  }
+}
