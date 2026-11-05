@@ -3,6 +3,7 @@ import { execFileSync } from 'node:child_process'
 import { readFileSync, readdirSync } from 'node:fs'
 import { HtmlValidate } from 'html-validate'
 import { open, loaded, countries, title } from './helpers.js'
+import { ESLint } from 'eslint'
 
 // S31 (validateur W3C Nu), règles de FM (html-validate) et fitness functions des ADR-0003, ADR-0004 et ADR-0009
 
@@ -71,4 +72,12 @@ test('ADR-0009 — les drapeaux affichés sont ceux de flags.svg (cartes et fich
   await page.goto('./#/country/BEL')
   await expect(title(page, 'Belgium')).toBeVisible()
   expect(await page.getByRole('img', { name: 'Flag of Belgium' }).getAttribute('src')).toMatch(svg)
+})
+
+// FM passe tout le JavaScript du dépôt (code et tests) à eslint : préréglage recommandé (eslint.config.js)
+test('Règles FM — eslint : aucune erreur dans le JavaScript du dépôt', async () => {
+  const eslint = new ESLint({ cwd: new URL('..', import.meta.url).pathname })
+  const results = await eslint.lintFiles(['src', 'tests', '*.js'])
+  const errors = results.flatMap((r) => r.messages.map((m) => `${r.filePath.split('/').slice(-2).join('/')}:${m.line} ${m.ruleId} — ${m.message}`))
+  expect(errors).toEqual([])
 })
