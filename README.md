@@ -91,6 +91,7 @@ const normalize = (text) => text.normalize('NFD').replace(/\p{Diacritic}/gu, '')
 
 - **Design inconsistencies.** The light detail page uses smaller text and a white background, while the dark one follows the style guide: both themes use the dark layout. The filter says "America" while the cards say "Americas": "Americas" everywhere, plus an "All regions" option so the three polar territories can be found. The theme button keeps its "Dark Mode" label (as in the design) and announces its state with `aria-pressed`.
 - **Data vs. design.** The design starts with Germany and shows older populations; the page keeps the data's alphabetical order and its 2024 populations, and Belgium shows its 4 neighbours (the design shows 3). For the pixel comparisons only, the tests load a small data set that reproduces the design's content.
+- **Custom select vs. native `<select>`.** Frontend Mentor's automated check suggests a native `<select>` for the region filter. I kept the custom listbox to match the design's open list, following the APG pattern and testing it with the keyboard and with clicks sent by screen readers.
 - **Accessibility.** The search placeholder (Grey 400, 3.95:1) was darkened to 4.7:1; every interactive element has a 2 px focus outline; loading, result counts and errors are announced.
 - **Visual comparison with the design files.** Screenshots differ from the Frontend Mentor JPGs by 1.1–3.1 % (threshold 5 %), mostly text antialiasing and the six-option region list.
 
