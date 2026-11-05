@@ -36,6 +36,7 @@ Users should be able to:
 
 ### Links
 
+- Solution URL: [frontendmentor.io/solutions/rest-countries-api-with-tailwind-v4-hash-routing-and-apg-combobox-vn9b1fV3r1](https://www.frontendmentor.io/solutions/rest-countries-api-with-tailwind-v4-hash-routing-and-apg-combobox-vn9b1fV3r1)
 - Live Site URL: [ounokoya.github.io/rest-countries-api](https://ounokoya.github.io/rest-countries-api/)
 
 ## My process
