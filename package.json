@@ -1,0 +1,23 @@
+{
+  "name": "rest-countries-api",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "playwright test",
+    "deploy": "bash scripts/deploy-gh-pages.sh"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.64.1",
+    "@tailwindcss/vite": "^4.3.4",
+    "jpeg-js": "^0.4.4",
+    "pngjs": "^7.0.0",
+    "tailwindcss": "^4.3.4",
+    "vite": "^8.3.5",
+    "vnu-jar": "^26.11.4"
+  }
+}
