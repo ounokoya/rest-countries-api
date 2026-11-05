@@ -13,6 +13,7 @@ export const DATA = JSON.parse(readFileSync(dataFile, 'utf8'))
 const byCode = Object.fromEntries(DATA.map((c) => [c.alpha3Code, c]))
 
 // Drapeaux servis en local (aucune requête vers flagcdn.com) : découpes des images FM, sinon un gris neutre
+// presque carré (300 × 260), car les drapeaux réels n'ont pas tous les proportions des cartes
 const FLAGS = new Set(['de', 'us', 'br', 'is', 'af', 'ax', 'al', 'dz', 'be'])
 async function serveFlags(page) {
   await page.route(/^https:\/\/flagcdn\.com\//, (route) => {

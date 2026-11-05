@@ -16,7 +16,8 @@ test('S1 — 1440 × 1024 : en-tête, recherche, filtre et grille de 4 cartes de
   near(await box(filterBox(page)), { x: 1160, y: 128, width: 200, height: 56 }, 'filtre')
   const first = ['Afghanistan', 'Åland Islands', 'Albania', 'Algeria']
   for (const [i, x] of [80, 419, 757, 1096].entries()) near(await box(card(page, first[i])), { x, y: 232, width: 264, height: 336 }, first[i])
-  near(await box(card(page, 'American Samoa')), { x: 80, y: 643 }, 'American Samoa')
+  // drapeau de test presque carré (300 × 260) : la carte garde sa taille, le drapeau est recadré
+  near(await box(card(page, 'American Samoa')), { x: 80, y: 643, width: 264, height: 336 }, 'American Samoa')
 })
 
 test('S2 — 375 × 812 : recherche, filtre dessous, cartes centrées', async ({ page }) => {

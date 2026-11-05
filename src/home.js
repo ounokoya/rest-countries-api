@@ -25,7 +25,7 @@ export function createHome({ onChange }) {
     img.alt = ''
     img.decoding = 'async'
     if (index >= FIRST_SCREEN) img.loading = 'lazy'
-    img.className = 'size-full object-cover'
+    img.className = 'aspect-[264/160] h-auto w-full object-cover' // recadré : les drapeaux n'ont pas tous les mêmes proportions
     li.querySelector('[data-slot="flag"]').append(img)
     const values = { name: country.name, population: formatNumber(country.population), region: list(country.region), capital: list(country.capital) }
     for (const field of li.querySelectorAll('[data-field]')) field.textContent = values[field.dataset.field]
