@@ -4,7 +4,7 @@ import { parse } from './router.js'
 import { showMessage } from './messages.js'
 import { createHome } from './home.js'
 
-const home = createHome()
+const home = createHome({ onChange: () => {} })
 let status = 'loading'
 
 function render() {

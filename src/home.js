@@ -1,13 +1,15 @@
 // Accueil : liste des pays, recherche, filtre, annonces (spec §5)
 
 import { formatNumber, list, normalize } from './data.js'
-import { detailHash } from './router.js'
+import { detailHash, homeHash, replace } from './router.js'
 import { showMessage } from './messages.js'
+import { createRegionFilter } from './region-filter.js'
 
 const FIRST_SCREEN = 8 // drapeaux chargés tout de suite (ADR-0009)
 
-export function createHome() {
+export function createHome({ onChange }) {
   const listEl = document.querySelector('#countries')
+  const search = document.querySelector('#search')
   const count = document.querySelector('#count')
   const message = document.querySelector('#home-message')
   const template = document.querySelector('#card-template')
@@ -39,6 +41,18 @@ export function createHome() {
     if (focusCode) shown.find((item) => item.code === focusCode)?.link.focus()
   }
 
+  // Recherche et filtre : l'adresse suit les choix sans empiler d'entrées (ADR-0006)
+  function update(change) {
+    state = { ...state, ...change }
+    const hash = homeHash(state)
+    replace(hash)
+    onChange(hash)
+    render()
+  }
+  const regions = createRegionFilter({ onSelect: (region) => update({ region }) })
+  search.addEventListener('input', () => update({ search: search.value }))
+  search.form.addEventListener('submit', (event) => event.preventDefault())
+
   return {
     message,
     setCountries(countries) {
@@ -46,6 +60,8 @@ export function createHome() {
     },
     show(route, options) {
       state = { search: route.search, region: route.region }
+      search.value = route.search
+      regions.set(route.region)
       render(options)
     },
   }
