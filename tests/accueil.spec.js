@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { open, loaded, search, filter, countries, card, announced, chooseRegion, currentRegion, DATA } from './helpers.js'
+import { open, loaded, search, filter, regionRadio, countries, card, announced, chooseRegion, currentRegion, DATA } from './helpers.js'
 
 // Spec §5 — S7 à S17 (données réelles de data.json)
 
@@ -111,48 +111,57 @@ test('S16 — adresse #/?search=bel&region=Europe ouverte directement : choix re
   expect(await names(page)).toEqual(['Belarus', 'Belgium'])
 })
 
-test('S17 — filtre au clavier : flèche bas deux fois puis Entrée choisit une région', async ({ page }) => {
+test('S17 — filtre au clavier : Entrée ouvre, Tab puis flèche bas choisit Africa, Entrée ferme', async ({ page }) => {
   await open(page, 1440)
   await loaded(page)
-  await filter(page).focus()
-  await page.keyboard.press('ArrowDown')
-  await page.keyboard.press('ArrowDown')
+  const button = filter(page)
+  await button.focus()
   await page.keyboard.press('Enter')
+  await expect(button).toHaveAttribute('aria-expanded', 'true')
+  await page.keyboard.press('Tab')
+  await expect(regionRadio(page, 'All regions')).toBeFocused()
+  await page.keyboard.press('ArrowDown')
 
-  await expect(page).toHaveURL(/region=\w+/)
-  await expect.poll(() => countries(page).count()).toBeLessThan(DATA.length)
+  await expect(countries(page)).toHaveCount(60)
+  await expect(page).toHaveURL(/region=Africa/)
+  await page.keyboard.press('Enter')
+  await expect(button).toHaveAttribute('aria-expanded', 'false')
+  await expect(button).toBeFocused()
+  await expect(button).toHaveText('Africa')
 })
 
-test('ADR-0007 — liste sur mesure : Échap ferme sans changer, Fin puis Entrée choisit Oceania', async ({ page }) => {
+test('ADR-0010 — Échap ferme la liste sans rien changer et rend le focus au bouton ; flèche haut depuis All regions choisit Oceania', async ({ page }) => {
   await open(page, 1440)
   await loaded(page)
-  const box = filter(page)
-  await box.focus()
-  await page.keyboard.press('ArrowDown')
-  await expect(box).toHaveAttribute('aria-expanded', 'true')
-  await expect(page.getByRole('listbox')).toBeVisible()
-  await page.keyboard.press('ArrowDown')
+  const button = filter(page)
+  await button.focus()
+  await page.keyboard.press('Enter')
+  await page.keyboard.press('Tab')
   await page.keyboard.press('Escape')
-  await expect(box).toHaveAttribute('aria-expanded', 'false')
+  await expect(button).toHaveAttribute('aria-expanded', 'false')
+  await expect(button).toBeFocused()
   await expect(countries(page)).toHaveCount(DATA.length)
-  await expect(box).toHaveText('Filter by Region')
+  await expect(button).toHaveText('Filter by Region')
 
-  await page.keyboard.press('ArrowDown')
-  await page.keyboard.press('End')
   await page.keyboard.press('Enter')
-  await expect(box).toHaveAttribute('aria-expanded', 'false')
+  await page.keyboard.press('Tab')
+  await page.keyboard.press('ArrowUp')
   await expect(countries(page)).toHaveCount(27)
-  await expect(box).toHaveText('Oceania')
-  await expect(box).toBeFocused()
+  await page.keyboard.press('Escape')
+  await expect(button).toHaveText('Oceania')
+  await expect(button).toBeFocused()
 })
 
-test('ADR-0007 — un clic sans souris (lecteur d\'écran) ouvre et ferme la liste', async ({ page }) => {
+test('ADR-0010 — un clic sans souris (lecteur d\'écran) ouvre la liste et choisit une région ; un clic dehors la ferme', async ({ page }) => {
   await open(page, 1440)
   await loaded(page)
-  const box = filter(page)
-  await box.evaluate((el) => el.click())
-  await expect(box).toHaveAttribute('aria-expanded', 'true')
-  await page.getByRole('option', { name: 'Asia', exact: true }).evaluate((el) => el.click())
-  await expect(box).toHaveAttribute('aria-expanded', 'false')
+  const button = filter(page)
+  await button.evaluate((el) => el.click())
+  await expect(button).toHaveAttribute('aria-expanded', 'true')
+  await regionRadio(page, 'Asia').evaluate((el) => el.click())
   await expect(countries(page)).toHaveCount(50)
+  await expect(regionRadio(page, 'Asia')).toBeChecked()
+
+  await page.mouse.click(700, 700)
+  await expect(button).toHaveAttribute('aria-expanded', 'false')
 })

@@ -22,12 +22,12 @@ test('S31 — le HTML servi passe le validateur W3C Nu sans erreur', async ({ re
 })
 
 // Vérifications automatiques de FM (rapport du 2026-11-05) : préréglage recommandé, sans les règles de style
-// que FM n'applique pas ; seule exception acceptée : la liste des régions sur mesure (R2, ADR-0007)
+// que FM n'applique pas ; aucune exception (les règles de FM s'imposent)
 test('Règles FM — html-validate : aucune erreur sur le HTML servi', async ({ request }) => {
   const html = await (await request.get('./')).text()
   const validator = new HtmlValidate({
     extends: ['html-validate:recommended'],
-    rules: { 'doctype-style': 'off', 'void-style': 'off', 'prefer-native-element': ['error', { exclude: ['listbox'] }] },
+    rules: { 'doctype-style': 'off', 'void-style': 'off' },
   })
   const report = await validator.validateString(html)
   const errors = report.results.flatMap((r) => r.messages).map((m) => `${m.line}:${m.column} ${m.ruleId} — ${m.message}`)

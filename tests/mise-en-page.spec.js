@@ -4,7 +4,7 @@ import { open, loaded, card, back, title, box, near } from './helpers.js'
 // Spec §4 — S1 à S6 (positions de la maquette Penpot, à 1 px près)
 
 const field = (page) => page.getByRole('search')
-const filterBox = (page) => page.getByRole('combobox', { name: 'Filter by Region' })
+const filterBox = (page) => page.getByRole('button', { name: /^Filter by Region/ })
 const flag = (page) => page.getByRole('img', { name: 'Flag of Belgium' })
 
 test('S1 — 1440 × 1024 : en-tête, recherche, filtre et grille de 4 cartes de la maquette', async ({ page }) => {

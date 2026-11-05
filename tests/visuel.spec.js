@@ -22,7 +22,7 @@ for (const { id, ref, w, h, theme, fixture, go, open: list } of screens) {
     await page.emulateMedia({ reducedMotion: 'reduce' })
     await open(page, w, h, { theme, fixture })
     await go(page)
-    if (list && !(await openRegions(page))) testInfo.annotations.push({ type: 'liste native', description: 'liste des régions fermée dans la capture' })
+    if (list) await openRegions(page)
     await page.mouse.move(0, 0) // aucun survol pendant la capture
     await page.evaluate(() => Promise.all([...document.images].map((img) => img.decode().catch(() => {}))))
 

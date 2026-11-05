@@ -13,7 +13,7 @@ Une page qui présente les 250 pays de `data.json` : on les cherche par nom, on 
 |---|---|
 | En-tête | Lien « Where in the world? » vers l'accueil (Q-A4) ; bouton « Dark Mode » avec la lune (contour en clair, pleine en sombre) ; libellé fixe, état annoncé (Q-B1) |
 | Recherche | Champ de recherche avec la loupe et le texte d'exemple « Search for a country… » ; libellé « Search for a country » (masqué à l'écran) |
-| Filtre | « Filter by Region » ; régions : All regions, Africa, Americas, Asia, Europe, Oceania (Q-B3, Q-B4) |
+| Filtre | Bouton « Filter by Region » qui ouvre la liste des régions, des boutons radio natifs (ADR-0010) : All regions, Africa, Americas, Asia, Europe, Oceania (Q-B3, Q-B4) |
 | Liste des pays | Une carte par pays, **dans l'ordre des données** (alphabétique, Q-B2) : drapeau, nom, Population, Region, Capital ; toute la carte est un lien vers la fiche |
 | Fiche | Back ; grand drapeau ; nom ; Native Name, Population, Region, Sub Region, Capital ; Top Level Domain, Currencies, Languages ; « Border Countries: » et un lien par voisin |
 | Messages | Chargement « Loading countries… » ; erreur « Could not load countries » + « Please check your connection and reload the page. » ; aucun résultat « No countries found » + « Try another name or region. » ; pays inconnu « Country not found » + « This address does not match any country. » et Back (G3) |
@@ -60,7 +60,7 @@ Police : Nunito Sans 300, 600 et 800.
 | Données (Q2) | Lues à l'ouverture depuis `data.json`, servi avec la page. Pendant la lecture : « Loading countries… ». Échec (réseau ou réponse en erreur) : message d'erreur, aucune carte |
 | Adresses (Q3, Q4) | `#/` : accueil ; `#/?search=bel&region=Europe` : accueil avec ces choix ; `#/country/BEL` : fiche (code `alpha3Code`). Une adresse ouverte directement ou partagée affiche le même écran. Code inconnu : « Country not found » |
 | Recherche (Q5) | Sur le nom du pays, pendant la frappe, sans tenir compte de la casse, des accents ni des espaces autour (« aland » trouve « Åland Islands ») ; combinée à la région |
-| Filtre (Q6, Q-B4) | « All regions » au départ ; une région à la fois ; les 3 pays hors des 5 régions n'apparaissent qu'avec « All regions ». Le filtre affiche la région choisie (« Filter by Region » tant qu'aucune n'est choisie). Au clavier : flèches puis Entrée choisissent une région |
+| Filtre (Q6, Q-B4) | « All regions » au départ ; une région à la fois ; les 3 pays hors des 5 régions n'apparaissent qu'avec « All regions ». Le bouton « Filter by Region » ouvre ou ferme la liste ; une région se choisit par un clic, ou au clavier (Tab jusqu'à la liste, flèches) ; Échap, Entrée, un clic sur une région ou un clic dehors ferment la liste et rendent le focus au bouton. Le bouton affiche la région choisie (« Filter by Region » tant qu'aucune n'est choisie) |
 | Résultats | Le nombre de pays affichés est annoncé (« 250 countries », « 3 countries », « 1 country », « 0 countries ») ; aucun résultat : message visible |
 | Ouvrir une fiche | Clic ou Entrée sur une carte, ou sur un voisin : la fiche s'affiche, le focus va sur le nom du pays, le titre du document devient « Belgium · Where in the world? » |
 | Revenir (Q4) | « Back » revient à la liste avec la recherche et la région choisies, le focus sur la carte du pays quitté ; fiche ouverte directement : Back mène à l'accueil. Le bouton retour du navigateur fonctionne aussi |
@@ -77,7 +77,7 @@ Police : Nunito Sans 300, 600 et 800.
 | # | Contrat |
 |---|---|
 | A1 | Repères : en-tête (`banner`), contenu (`main`), formulaire de recherche (`search`) ; un seul `h1` par écran (masqué sur l'accueil : « Countries ») |
-| A2 | Le champ de recherche et le filtre ont un nom accessible ; le filtre annonce la région choisie |
+| A2 | Le champ de recherche et le filtre ont un nom accessible ; le bouton du filtre annonce s'il est ouvert (`aria-expanded`) et la région choisie ; les régions sont des boutons radio natifs dans un groupe nommé |
 | A3 | Chaque carte est un seul lien, dont le nom commence par le nom du pays ; drapeau des cartes sans texte alternatif |
 | A4 | Le nombre de résultats, le chargement et l'absence de résultat sont annoncés (`status`) ; l'erreur de chargement est une alerte (`alert`) |
 | A5 | À l'ouverture d'une fiche, le focus va sur son titre ; au retour, sur la carte quittée ; le titre du document suit l'écran |
@@ -93,7 +93,7 @@ Police : Nunito Sans 300, 600 et 800.
 | Bouton de thème | button | « Dark Mode » (`aria-pressed` : `true` en sombre) |
 | Formulaire de recherche | search | — (il a la taille et la place du champ dessiné : S1 à S3) |
 | Champ de recherche | searchbox | « Search for a country » |
-| Filtre | combobox | « Filter by Region » ; options (role option) « All regions », « Africa », « Americas », « Asia », « Europe », « Oceania » |
+| Filtre | button | commence par « Filter by Region » (`aria-expanded`) ; ses régions : radio « All regions », « Africa », « Americas », « Asia », « Europe », « Oceania » dans le groupe « Region » |
 | Liste des pays | list | « Countries » ; une carte par élément de liste |
 | Carte | link | commence par le nom du pays (ex. « Germany ») ; nom du pays en `heading` de niveau 2 |
 | Titre de la fiche | heading (niveau 1) | « Belgium » |
@@ -132,7 +132,7 @@ S13 When je choisis Europe  Then 53 cartes, toutes « Region: Europe » ; l'adre
 S14 When « ger » et Europe  Then Germany seul ; « 1 country »
 S15 When « zzz »  Then « No countries found » visible, « 0 countries » annoncé, aucune carte
 S16 Given l'adresse #/?search=bel&region=Europe ouverte directement  Then champ « bel », filtre Europe, Belarus et Belgium
-S17 Given le filtre au clavier  When flèche bas deux fois puis Entrée  Then une région est choisie (moins de 250 cartes, region= dans l'adresse)
+S17 Given le filtre au clavier  When Entrée, Tab, flèche bas, Entrée  Then Africa choisie (60 cartes, region=Africa), liste fermée, focus sur le bouton qui affiche « Africa »
 
 Fiche et navigation
 S18 When je clique la carte Belgium  Then adresse #/country/BEL ; titre « Belgium » (h1) focalisé ; titre du document « Belgium · Where in the world? » ;
@@ -167,4 +167,4 @@ S37 Mobile 375 × 985 : fiche claire et sombre  vs mobile-fiche-*.jpg  ≤ 5,0 %
 
 **Jeu de données de test (G3)** : pour S34 à S37, les tests remplacent `data.json` par le contenu des images FM — les 8 pays dans l'ordre de l'image (Germany, United States of America, Brazil, Iceland, Afghanistan, Åland Islands, Albania, Algeria) avec leurs populations de l'image ; Belgium avec 11,319,511 et ses 3 voisins dessinés (France, Germany, Netherlands) — et servent les drapeaux découpés dans les images FM. Le site, lui, suit toujours les données (Q-B2, Q-B9). Dans tous les tests, les drapeaux sont servis en local (aucune requête vers flagcdn.com).
 
-Écarts acceptés d'avance : liste à 6 régions (« All regions », « Americas », Q-B3, Q-B4) ; fiche claire dessinée comme la sombre (Q-B5) ; si l'ADR retient une liste native, sa liste ouverte n'apparaît pas dans les captures (S34, S36).
+Écarts acceptés d'avance : liste à 6 régions (« All regions », « Americas », Q-B3, Q-B4) ; fiche claire dessinée comme la sombre (Q-B5).

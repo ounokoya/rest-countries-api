@@ -40,7 +40,8 @@ export async function open(page, width, height = 1024, { theme = 'light', fixtur
 }
 
 export const search = (page) => page.getByRole('searchbox', { name: 'Search for a country' })
-export const filter = (page) => page.getByRole('combobox', { name: 'Filter by Region' })
+export const filter = (page) => page.getByRole('button', { name: /^Filter by Region/ })
+export const regionRadio = (page, name) => page.getByRole('radio', { name, exact: true })
 export const countries = (page) => page.getByRole('list', { name: 'Countries' }).getByRole('listitem')
 const escape = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 export const card = (page, name) => page.getByRole('link', { name: new RegExp(`^${escape(name)}(\\s|$)`) })
@@ -55,22 +56,16 @@ export async function loaded(page, count = DATA.length) {
   await expect(countries(page)).toHaveCount(count)
 }
 
-// Le filtre peut être une liste native ou une liste sur mesure (choix de l'ADR) : on vise son rôle
-const isNative = (page) => filter(page).evaluate((el) => el.tagName === 'SELECT')
-export async function chooseRegion(page, name) {
-  if (await isNative(page)) await filter(page).selectOption({ label: name })
-  else {
-    await filter(page).click()
-    await page.getByRole('option', { name, exact: true }).click()
-  }
-}
+// Filtre (ADR-0010) : un bouton ouvre la liste des régions, des boutons radio natifs
 export async function openRegions(page) {
-  if (await isNative(page)) return false // une liste native ouverte n'apparaît pas dans les captures
-  await filter(page).click()
-  await expect(page.getByRole('option', { name: 'Oceania', exact: true })).toBeVisible()
-  return true
+  if ((await filter(page).getAttribute('aria-expanded')) !== 'true') await filter(page).click()
+  await expect(regionRadio(page, 'Oceania')).toBeVisible()
 }
-export const currentRegion = (page) => filter(page).evaluate((el) => (el.tagName === 'SELECT' ? el.selectedOptions[0].text : el.textContent).trim())
+export async function chooseRegion(page, name) {
+  await openRegions(page)
+  await regionRadio(page, name).click()
+}
+export const currentRegion = (page) => filter(page).evaluate((el) => el.textContent.trim())
 
 // Couleur de fond de la page (body, sinon html)
 export const pageBackground = (page) => page.evaluate(() => {
