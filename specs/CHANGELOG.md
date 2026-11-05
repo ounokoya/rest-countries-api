@@ -2,6 +2,18 @@
 
 Format : [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) · Versions : [SemVer](https://semver.org/lang/fr/).
 
+## [1.0.1] — 2026-11-05
+
+Correctifs issus des vérifications automatiques de Frontend Mentor (`specs/analyse/2026-11-05-rapport-fm.md`).
+
+### Fixed
+- La recherche n'est plus un `<form>` sans bouton d'envoi : `<div role="search">` (R1).
+- Les titres de la fiche et du gabarit de carte ne sont plus vides dans le HTML servi (R3).
+- `tests/helpers.js` : plus de chaînage optionnel avant `.trim()` (R4).
+
+### Notes
+- R2 (« Prefer to use the native `<select>` element ») est gardée : la liste des régions sur mesure est un choix (ADR-0007), fidèle aux images FM et testée au clavier et au lecteur d'écran.
+
 ## [1.0.0] — 2026-11-05
 
 Première version.
