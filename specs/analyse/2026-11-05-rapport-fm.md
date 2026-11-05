@@ -7,7 +7,7 @@ Reproduites en local : `html-validate` (préréglage recommandé sans les règle
 | # | Remarque FM | Verdict | Correctif proposé |
 |---|---|---|---|
 | R1 | HTML, accessibilité (`wcag/h32`) : « `<form>` element must have a submit button » sur `<form role="search">` | ✅ Juste : la recherche filtre pendant la frappe, il n'y a rien à envoyer | `<div role="search">` au lieu de `<form>` ; le repère `search` et les tests restent les mêmes |
-| R2 | HTML, bonne pratique (`prefer-native-element`) : « Prefer to use the native `<select>` element » sur `<ul role="listbox">` | ⚖️ Conséquence directe de l'ADR-0007 (liste sur mesure, choix de Koya) : la règle signale tout rôle `listbox` | **Gardée** (décision de Koya, 2026-11-05) : liste fidèle aux images FM, motif APG testé au clavier et au clic sans souris ; la remarque reste |
+| R2 | HTML, bonne pratique (`prefer-native-element`) : « Prefer to use the native `<select>` element » sur `<ul role="listbox">` | ⚖️ Conséquence directe de l'ADR-0007 (liste sur mesure, choix de Koya) : la règle signale tout rôle `listbox` | Gardée en v1.0.1, puis **corrigée en v1.0.2** (décision de Koya : les règles de la plateforme s'imposent) : bouton + boutons radio natifs (ADR-0010) |
 | R3 | HTML, accessibilité (`empty-heading`, 2) : titres vides `<h1 id="country-name">` (fiche) et `<h2>` du gabarit de carte | ✅ Juste dans le HTML servi, même s'ils sont remplis avant d'être affichés | Texte par défaut dans les deux titres, remplacé par le nom du pays |
 | R4 | JavaScript (`no-unsafe-optional-chaining`) : `(el.selectedOptions[0]?.text).trim()` dans `tests/helpers.js` | ✅ Juste (fichier de test, mais FM lit tout le dépôt) | Lecture sans chaînage optionnel |
 

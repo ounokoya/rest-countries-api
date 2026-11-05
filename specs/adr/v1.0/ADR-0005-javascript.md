@@ -15,9 +15,9 @@ La page lit 250 pays, filtre pendant la frappe, affiche deux écrans (accueil, f
 ## Décision
 - Modules ES natifs, sans framework ni dépendance d'exécution (hors police, ADR-0004).
 - Le HTML statique de `index.html` contient tout ce qui ne dépend pas des données : en-tête, recherche, filtre, messages, et des gabarits `<template>` (carte, fiche) clonés pour chaque pays.
-- Modules : `src/data.js` (lecture de `data.json`, valeurs affichées : séparateurs, « None », listes), `src/router.js` (adresse ⇄ écran, ADR-0006), `src/home.js` (liste, recherche, filtre, annonces, focus au retour), `src/detail.js` (fiche, voisins, titre du document, focus), `src/region-filter.js` (liste des régions, ADR-0007), `src/theme.js` (bouton « Dark Mode », ADR-0008), `src/messages.js` (chargement, erreur, aucun résultat, pays inconnu) ; `src/main.js` les relie.
+- Modules : `src/data.js` (lecture de `data.json`, valeurs affichées : séparateurs, « None », listes), `src/router.js` (adresse ⇄ écran, ADR-0006), `src/home.js` (liste, recherche, filtre, annonces, focus au retour), `src/detail.js` (fiche, voisins, titre du document, focus), `src/region-filter.js` (liste des régions, ADR-0010), `src/theme.js` (bouton « Dark Mode », ADR-0008), `src/messages.js` (chargement, erreur, aucun résultat, pays inconnu) ; `src/main.js` les relie.
 - La recherche compare des noms ramenés en minuscules sans accents (`normalize('NFD')`), sans les espaces autour.
 
 ## Conséquences
-- Tests par partie : `data.js` → S9, S10, S23 ; `home.js` → S7, S8, S11 à S16 ; `region-filter.js` → S13, S17 et la fitness function « ADR-0007 » ; `router.js` et `detail.js` → S18 à S25 ; `theme.js` → S26, S27.
+- Tests par partie : `data.js` → S9, S10, S23 ; `home.js` → S7, S8, S11 à S16 ; `region-filter.js` → S13, S17 et les fitness functions « ADR-0010 » ; `router.js` et `detail.js` → S18 à S25 ; `theme.js` → S26, S27.
 - Le HTML servi contient la structure de la page : le validateur W3C (S31) la vérifie, et l'en-tête s'affiche avant les données.

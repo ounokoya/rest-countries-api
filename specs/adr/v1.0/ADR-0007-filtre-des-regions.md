@@ -1,7 +1,7 @@
 # ADR-0007 : Filtre des régions
 
 ## Statut
-Accepté (2026-11-05) — choix de Koya parmi deux options (plan, Q6).
+Remplacé par ADR-0010 (2026-11-05) — accepté le même jour (choix de Koya parmi deux options, plan, Q6) ; remarque FM R2 (`prefer-native-element`) : les règles de la plateforme s'imposent.
 
 ## Contexte
 FM dessine une liste ouverte sur mesure (blanche, ombre, 14 px, sans bordure) sous un bouton « Filter by Region ». Les tests visent le rôle `combobox` « Filter by Region » et les options (S13, S16, S17) ; ils marchent avec les deux options.

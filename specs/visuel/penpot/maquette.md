@@ -119,6 +119,10 @@ Notes :
 
 104 liens. Simplifications : toutes les cartes mènent à la fiche de Belgium ; la recherche et le choix d'une région ne filtrent pas (montrés par l'état « aucun résultat » et les composants) ; les survols sont montrés par les composants.
 
+## Après la soumission (v1.0.2)
+
+Le filtre des régions devient un bouton + des boutons radio natifs (ADR-0010) : même aspect que le composant « Liste des régions », sans fond sur l'option active à l'ouverture. Maquette inchangée.
+
 ## Fichiers
 
 - `desktop-*.png`, `mobile-*.png`, `tablette-*.png`, `etat-*.png` : rendus des 18 écrans.
