@@ -87,14 +87,21 @@
 }
 
 @layer components {
-  [role="option"] {
-    @apply h-6 cursor-pointer px-6 leading-6 md:h-7 md:leading-7;
+  /* ADR-0010 : régions en boutons radio natifs ; le bouton radio, invisible, couvre toute la ligne (M17) */
+  .region {
+    @apply relative block h-6 cursor-pointer px-6 leading-6 md:h-7 md:leading-7;
   }
-  [role="option"]:hover,
-  [role="option"].is-active {
+  .region:hover,
+  .region:has(:focus-visible) {
     @apply bg-option;
   }
-  [role="option"][aria-selected="true"] {
+  .region:has(:checked) {
     @apply font-semibold;
+  }
+  .region input {
+    @apply absolute inset-0 size-full cursor-pointer appearance-none bg-transparent;
+  }
+  .region input:focus-visible {
+    outline-offset: -2px;
   }
 }

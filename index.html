@@ -37,19 +37,20 @@
             <input id="search" type="search" autocomplete="off" placeholder="Search for a country…" class="size-full rounded-card bg-transparent pr-6 pl-[74px] text-xs font-light placeholder:text-placeholder md:text-sm" />
           </div>
           <div class="relative z-10 w-[200px]">
-            <span id="region-label" class="sr-only">Filter by Region</span>
-            <div id="region" tabindex="0" role="combobox" aria-labelledby="region-label" aria-haspopup="listbox" aria-expanded="false" aria-controls="regions" class="flex h-12 w-full cursor-pointer items-center justify-between rounded-card bg-element pr-5 pl-6 text-xs font-light shadow-soft select-none md:h-14 md:text-sm">
-              <span data-value>Filter by Region</span>
+            <span id="region-label" hidden>Filter by Region</span>
+            <button type="button" id="region" aria-expanded="false" aria-controls="regions" aria-labelledby="region-value" class="flex h-12 w-full items-center justify-between rounded-card bg-element pr-5 pl-6 text-xs font-light shadow-soft md:h-14 md:text-sm">
+              <span id="region-value">Filter by Region</span>
               <svg class="h-[5px] w-2 md:h-1.5 md:w-2.5" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
-            </div>
-            <ul id="regions" role="listbox" aria-labelledby="region-label" hidden class="absolute top-full left-0 mt-1 w-full rounded-card bg-element py-3 text-xs font-light shadow-soft md:text-sm">
-              <li role="option" id="region-all" data-region="" aria-selected="true">All regions</li>
-              <li role="option" id="region-africa" data-region="Africa" aria-selected="false">Africa</li>
-              <li role="option" id="region-americas" data-region="Americas" aria-selected="false">Americas</li>
-              <li role="option" id="region-asia" data-region="Asia" aria-selected="false">Asia</li>
-              <li role="option" id="region-europe" data-region="Europe" aria-selected="false">Europe</li>
-              <li role="option" id="region-oceania" data-region="Oceania" aria-selected="false">Oceania</li>
-            </ul>
+            </button>
+            <fieldset id="regions" hidden class="absolute top-full left-0 mt-1 w-full rounded-card bg-element py-3 text-xs font-light shadow-soft md:text-sm">
+              <legend class="sr-only">Region</legend>
+              <label class="region"><input type="radio" name="region" value="" checked /> All regions</label>
+              <label class="region"><input type="radio" name="region" value="Africa" /> Africa</label>
+              <label class="region"><input type="radio" name="region" value="Americas" /> Americas</label>
+              <label class="region"><input type="radio" name="region" value="Asia" /> Asia</label>
+              <label class="region"><input type="radio" name="region" value="Europe" /> Europe</label>
+              <label class="region"><input type="radio" name="region" value="Oceania" /> Oceania</label>
+            </fieldset>
           </div>
         </div>
 
