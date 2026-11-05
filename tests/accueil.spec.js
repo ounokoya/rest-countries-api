@@ -145,3 +145,14 @@ test('ADR-0007 — liste sur mesure : Échap ferme sans changer, Fin puis Entré
   await expect(box).toHaveText('Oceania')
   await expect(box).toBeFocused()
 })
+
+test('ADR-0007 — un clic sans souris (lecteur d\'écran) ouvre et ferme la liste', async ({ page }) => {
+  await open(page, 1440)
+  await loaded(page)
+  const box = filter(page)
+  await box.evaluate((el) => el.click())
+  await expect(box).toHaveAttribute('aria-expanded', 'true')
+  await page.getByRole('option', { name: 'Asia', exact: true }).evaluate((el) => el.click())
+  await expect(box).toHaveAttribute('aria-expanded', 'false')
+  await expect(countries(page)).toHaveCount(50)
+})

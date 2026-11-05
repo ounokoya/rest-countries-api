@@ -49,9 +49,9 @@ export function createRegionFilter({ onSelect }) {
     return null
   }
 
-  // Clic de souris seulement : le clavier est géré par keydown (detail = 0 pour Entrée ou Espace)
-  button.addEventListener('click', (event) => {
-    if (event.detail === 0) return
+  // Élément focalisable et non <button> (exemple de l'APG) : Entrée et Espace ne produisent pas de clic,
+  // le clavier est géré par keydown ; un clic (souris ou lecteur d'écran) ouvre ou ferme
+  button.addEventListener('click', () => {
     if (isOpen()) close()
     else open()
   })

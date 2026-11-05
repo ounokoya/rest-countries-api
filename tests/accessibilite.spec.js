@@ -69,6 +69,7 @@ for (const theme of ['light', 'dark']) {
   for (const width of [1440, 375]) {
     for (const [name, go] of Object.entries(states)) {
       test(`S30 — axe-core : ${name} (${theme}, ${width} px)`, async ({ page }) => {
+        test.setTimeout(60_000) // axe-core analyse les 250 cartes de l'accueil en 15 à 20 s
         await open(page, width, 1024, { theme })
         await go(page)
         const { violations } = await new AxeBuilder({ page }).analyze()
