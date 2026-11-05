@@ -2,6 +2,14 @@
 
 Format : [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) · Versions : [SemVer](https://semver.org/lang/fr/).
 
+## [1.0.2] — 2026-11-05
+
+Remarque R2 des vérifications automatiques de Frontend Mentor (`prefer-native-element`) : les règles de la plateforme s'imposent (décision de Koya).
+
+### Changed
+- Filtre des régions : un bouton ouvre une liste de **boutons radio natifs** au lieu d'une liste sur mesure `combobox` / `listbox` (ADR-0010 remplace l'ADR-0007). Même aspect ; au clavier : Tab jusqu'à la liste, flèches, Entrée ou Échap pour fermer.
+- Test de garde html-validate sans exception.
+
 ## [1.0.1] — 2026-11-05
 
 Correctifs issus des vérifications automatiques de Frontend Mentor (`specs/analyse/2026-11-05-rapport-fm.md`).
