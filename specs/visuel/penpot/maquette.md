@@ -1,6 +1,6 @@
 # Maquette Penpot — REST Countries API
 
-> SDL-FM 1.4.0 Phase 3. Fichier Penpot : « API REST Countries » (créé par Koya ; nom vérifié avant chaque écriture), page « REST Countries ». **En attente de G3.**
+> SDL-FM 1.4.0 Phase 3. Fichier Penpot : « API REST Countries » (créé par Koya ; nom vérifié avant chaque écriture), page « REST Countries ». **Validée (G3, 2026-11-05)** avec les 3 propositions : survols `#F0F0F0` / `#374858`, jeu de données de test reproduisant l'image FM pour les comparaisons de la Phase 7, textes des états.
 > Décisions G2 appliquées : texte d'exemple et loupe en gris AA (Q-A1), limites par ombre seule (Q-A2), contour de focus 2 px décalé de 2 px (Q-A3), titre en lien vers l'accueil (Q-A4), libellé fixe « Dark Mode » et lune pleine en sombre (Q-B1), « Americas » (Q-B3), « All regions » en tête de liste (Q-B4), fiche claire dessinée comme la fiche sombre (Q-B5), proposition tablette (Q-B8).
 
 ## Rendu des exports
