@@ -52,6 +52,10 @@ Contrôle rouge fait avant le code (Phase 4) : 65 échecs pour la bonne raison s
 | — | Après un saut de défilement (focus sur une carte lointaine), les drapeaux apparaissent après le délai du réseau | Accepté : chargement différé voulu (ADR-0009) ; ils sont tous chargés dès qu'ils sont visibles |
 | — | Le navigateur intégré recharge la page quand on change seulement le `#` par la barre d'adresse | Sans effet : la page relit l'adresse au chargement |
 
-## 4. Verdict
+## 4. En ligne (Phase 12)
+
+`BASE_URL=https://ounokoya.github.io/rest-countries-api/ npx playwright test --workers=2` : **72 réussis sur 72** (1,6 min), sur la v1.0.0 déployée depuis la branche `gh-pages`.
+
+## 5. Verdict
 
 Conforme : les 37 critères de la spec passent, la page suit la maquette validée (G3) aux trois largeurs et les 4 écarts du parcours réel sont corrigés et protégés par des tests. → Phase 9.
