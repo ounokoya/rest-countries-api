@@ -70,7 +70,7 @@ export async function openRegions(page) {
   await expect(page.getByRole('option', { name: 'Oceania', exact: true })).toBeVisible()
   return true
 }
-export const currentRegion = (page) => filter(page).evaluate((el) => (el.tagName === 'SELECT' ? el.selectedOptions[0]?.text : el.textContent).trim())
+export const currentRegion = (page) => filter(page).evaluate((el) => (el.tagName === 'SELECT' ? el.selectedOptions[0].text : el.textContent).trim())
 
 // Couleur de fond de la page (body, sinon html)
 export const pageBackground = (page) => page.evaluate(() => {

@@ -1,9 +1,10 @@
 import { test, expect } from '@playwright/test'
 import { execFileSync } from 'node:child_process'
 import { readFileSync, readdirSync } from 'node:fs'
+import { HtmlValidate } from 'html-validate'
 import { open, loaded, countries, title } from './helpers.js'
 
-// S31 (validateur W3C Nu) et fitness functions des ADR-0003, ADR-0004 et ADR-0009
+// S31 (validateur W3C Nu), règles de FM (html-validate) et fitness functions des ADR-0003, ADR-0004 et ADR-0009
 
 const root = (path) => new URL(`../${path}`, import.meta.url)
 const vnu = root('node_modules/vnu-jar/build/dist/vnu.jar').pathname
@@ -18,6 +19,19 @@ test('S31 — le HTML servi passe le validateur W3C Nu sans erreur', async ({ re
     output = `${error.stdout}${error.stderr}`
   }
   expect(output).toBe('')
+})
+
+// Vérifications automatiques de FM (rapport du 2026-11-05) : préréglage recommandé, sans les règles de style
+// que FM n'applique pas ; seule exception acceptée : la liste des régions sur mesure (R2, ADR-0007)
+test('Règles FM — html-validate : aucune erreur sur le HTML servi', async ({ request }) => {
+  const html = await (await request.get('./')).text()
+  const validator = new HtmlValidate({
+    extends: ['html-validate:recommended'],
+    rules: { 'doctype-style': 'off', 'void-style': 'off', 'prefer-native-element': ['error', { exclude: ['listbox'] }] },
+  })
+  const report = await validator.validateString(html)
+  const errors = report.results.flatMap((r) => r.messages).map((m) => `${m.line}:${m.column} ${m.ruleId} — ${m.message}`)
+  expect(errors).toEqual([])
 })
 
 test('ADR-0003 — aucune couleur écrite en dur hors des tokens (@theme et rôles de couleur)', () => {
