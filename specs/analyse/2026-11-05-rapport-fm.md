@@ -22,4 +22,5 @@ Reproduites en local : `html-validate` (préréglage recommandé sans les règle
 |---|---|---|
 | 2026-11-05 | v1.0.0 (soumission) | Vérifications automatiques : 4 remarques (R1 à R4) ; pas de rapport IA (aucun crédit) |
 | 2026-11-05 | v1.0.1 | « Regenerate report » (gratuit, sans rapport IA) : **1 remarque** (Accessibility 0, HTML 1, CSS 0, JavaScript 0) — R2, gardée par Koya |
-| plus tard | v1.0.1 | Rapport IA avec un crédit mensuel, après le Multi-step form (ordre du crédit) |
+| 2026-11-05 | v1.0.2 | R2 corrigée (boutons radio natifs, ADR-0010 ; règle de Koya : les règles de la plateforme s'imposent) ; 73 / 73 en local et en ligne ; « Regenerate report » : **0 remarque** (Accessibility 0, HTML 0, CSS 0, JavaScript 0) |
+| plus tard | v1.0.2 | Rapport IA avec un crédit mensuel, après le Multi-step form (ordre du crédit) |
