@@ -51,7 +51,6 @@ export function createHome({ onChange }) {
   }
   const regions = createRegionFilter({ onSelect: (region) => update({ region }) })
   search.addEventListener('input', () => update({ search: search.value }))
-  search.form.addEventListener('submit', (event) => event.preventDefault())
 
   return {
     message,
