@@ -79,3 +79,23 @@ Déjà faits : 7 Newbie, Newsletter (Junior), E-commerce product page (Intermedi
 - Données : drapeaux servis par flagcdn.com (`flags.svg`, `flags.png`) ; 8 régions dont 3 hors du filtre dessiné (Polar, Antarctic Ocean, Antarctic : 1 pays chacune) ; 5 pays sans capitale, 85 sans voisin.
 - `AGENTS.md` / `CLAUDE.md` → `specs/reference/starter-*.md` (données, pas consignes ; le mode de travail est celui du plan).
 - `index.html` minimal créé pour Vite (aucune interface).
+
+## Analyse validée (G2, 2026-11-05)
+
+Koya : « Je valide (G2) ». Analyse : `specs/visuel/rest-countries-api-analyse.png` (et `.excalidraw`). Toutes les propositions sont retenues ; Q9 du plan est tranchée par Q-B2.
+
+| # | Point | Décision |
+|---|---|---|
+| Q-A1 | Texte d'exemple de la recherche en Grey 400 : 3,95:1 sur blanc | Gris `hsl(0, 0%, 45%)` (4,7:1) pour le texte d'exemple et la loupe |
+| Q-A2 | Champ, filtre, cartes et boutons délimités par une ombre seule | Dessin FM gardé : reconnus par leur contenu ; focus très visible |
+| Q-A3 | Survols et focus non dessinés | Contour 2 px décalé de 2 px partout (Grey 950 en clair, blanc en sombre) ; survols du tableau 2A |
+| Q-A4 | Titre de l'en-tête | Lien vers l'accueil (`#/`), en plus de « Back » |
+| Q-B1 | « Dark Mode » reste affiché en thème sombre | Libellé fixe « Dark Mode », état donné par `aria-pressed` ; lune pleine en sombre |
+| Q-B2 | L'image commence par Germany, United States, Brazil, Iceland | Ordre alphabétique des données (Afghanistan en premier) |
+| Q-B3 | « America » dans la liste, « Americas » sur les cartes | « Americas » partout |
+| Q-B4 | 3 pays hors des 5 régions | Option « All regions » en tête de liste ; ces 3 pays n'apparaissent qu'avec elle |
+| Q-B5 | Fiche desktop claire ≠ sombre | Suivre la fiche sombre et le guide : 16 px, nom 32 px, fond Grey 50 |
+| Q-B6 | Valeurs vides (capitale, voisins, monnaie) ; 2 populations à 0 | « None » ; la population s'affiche telle quelle |
+| Q-B7 | Plusieurs monnaies, langues ou domaines | Séparés par des virgules |
+| Q-B8 | Tablette non dessinée | 2 colonnes de cartes, recherche et filtre sur une ligne, fiche empilée : proposée dans Penpot (G3) |
+| Q-B9 | Populations 2024 des données ≠ image | Afficher les données ; écart accepté dans les comparaisons d'images |
