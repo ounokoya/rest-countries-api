@@ -1,1 +1,100 @@
 @import "tailwindcss";
+/* ADR-0004 : Nunito Sans servie avec le site */
+@import "@fontsource/nunito-sans/300.css";
+@import "@fontsource/nunito-sans/600.css";
+@import "@fontsource/nunito-sans/800.css";
+
+/* ADR-0008 : le thème sombre suit l'attribut data-theme de <html> */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* ADR-0003 : tokens de la bibliothèque Penpot (specs/visuel/penpot/maquette.md) */
+@theme {
+  --color-*: initial;
+  --color-blue-900: hsl(209, 23%, 22%);
+  --color-blue-950: hsl(207, 26%, 17%);
+  --color-grey-950: hsl(200, 15%, 8%);
+  --color-grey-400: hsl(0, 0%, 50%);
+  --color-grey-50: hsl(0, 0%, 99%);
+  --color-white: hsl(0, 100%, 100%);
+  --color-grey-placeholder: hsl(0, 0%, 45%); /* Q-A1 : 4,7:1 sur blanc */
+  --color-hover-light: hsl(0, 0%, 94%); /* G3 */
+  --color-hover-dark: hsl(209, 23%, 28%); /* G3 */
+
+  --font-sans: "Nunito Sans", sans-serif;
+  --text-title-mobile: 1.375rem;
+  --text-title: 2rem;
+
+  --radius-card: 5px;
+  --radius-back: 6px;
+  --radius-back-mobile: 4px;
+  --radius-chip: 2px;
+
+  --shadow-header: 0 2px 4px 0 hsl(0 0% 0% / 0.06);
+  --shadow-soft: 0 0 7px 2px hsl(0 0% 0% / 0.03);
+  --shadow-back: 0 0 7px 0 hsl(0 0% 0% / 0.29);
+  --shadow-chip: 0 0 4px 1px hsl(0 0% 0% / 0.1);
+  --shadow-flag: 0 0 14px 4px hsl(0 0% 0% / 0.03);
+}
+
+/* Couleurs par rôle : un jeu de valeurs par thème */
+@theme inline {
+  --color-page: var(--role-page);
+  --color-element: var(--role-element);
+  --color-text: var(--role-text);
+  --color-placeholder: var(--role-placeholder);
+  --color-hover: var(--role-hover);
+  --color-option: var(--role-option);
+  --color-focus: var(--role-focus);
+  --shadow-hover: var(--role-shadow-hover);
+}
+
+:root {
+  --role-page: var(--color-grey-50);
+  --role-element: var(--color-white);
+  --role-text: var(--color-grey-950);
+  --role-placeholder: var(--color-grey-placeholder);
+  --role-hover: var(--color-hover-light);
+  --role-option: var(--color-hover-light);
+  --role-focus: var(--color-grey-950);
+  --role-shadow-hover: 0 4px 16px 0 hsl(0 0% 0% / 0.12);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --role-page: var(--color-blue-950);
+  --role-element: var(--color-blue-900);
+  --role-text: var(--color-white);
+  --role-placeholder: var(--color-white);
+  --role-hover: var(--color-hover-dark);
+  --role-option: var(--color-blue-950);
+  --role-focus: var(--color-white);
+  --role-shadow-hover: 0 4px 16px 0 hsl(0 0% 0% / 0.35);
+}
+
+@layer base {
+  /* Q-A3 : contour de focus de 2 px, décalé de 2 px, sur tous les éléments interactifs */
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+  /* titres focalisés par le script pour les lecteurs d'écran : pas d'élément interactif à signaler */
+  [tabindex="-1"]:focus {
+    outline: none;
+  }
+  input[type="search"]::-webkit-search-cancel-button {
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  [role="option"] {
+    @apply h-6 cursor-pointer px-6 leading-6 md:h-7 md:leading-7;
+  }
+  [role="option"]:hover,
+  [role="option"].is-active {
+    @apply bg-option;
+  }
+  [role="option"][aria-selected="true"] {
+    @apply font-semibold;
+  }
+}
