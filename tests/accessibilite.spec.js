@@ -113,3 +113,13 @@ test('S33 — drapeaux : dimensions déclarées ; les 8 premiers chargés tout d
     expect.soft(loading === 'lazy', `chargement différé du drapeau ${i + 1}`).toBe(i >= 8)
   }
 })
+
+test('S33 — au premier affichage, seuls les drapeaux proches de l\'écran sont téléchargés', async ({ page }) => {
+  const flags = new Set()
+  page.on('request', (r) => { if (r.url().startsWith('https://flagcdn.com/')) flags.add(r.url()) })
+  await open(page, 1440)
+  await loaded(page)
+  await page.waitForTimeout(500)
+  expect(flags.size).toBeGreaterThanOrEqual(8)
+  expect(flags.size).toBeLessThan(80)
+})

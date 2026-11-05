@@ -21,10 +21,10 @@ export function createHome({ onChange }) {
     const link = li.querySelector('a')
     link.href = detailHash(country.alpha3Code)
     const img = new Image(264, 160)
-    img.src = country.flags.svg
+    if (index >= FIRST_SCREEN) img.loading = 'lazy' // avant src : poser src lance aussitôt le téléchargement
     img.alt = ''
     img.decoding = 'async'
-    if (index >= FIRST_SCREEN) img.loading = 'lazy'
+    img.src = country.flags.svg
     img.className = 'aspect-[264/160] h-auto w-full object-cover' // recadré : les drapeaux n'ont pas tous les mêmes proportions
     li.querySelector('[data-slot="flag"]').append(img)
     const values = { name: country.name, population: formatNumber(country.population), region: list(country.region), capital: list(country.capital) }
