@@ -4,6 +4,7 @@ import { parse, homeHash } from './router.js'
 import { showMessage } from './messages.js'
 import { createHome } from './home.js'
 import { createDetail } from './detail.js'
+import { initTheme } from './theme.js'
 
 const TITLE = document.title
 const homeView = document.querySelector('#home')
@@ -13,6 +14,8 @@ let previous = null // écran affiché avant celui-ci
 let listHash = '#/' // dernière liste vue, avec sa recherche et sa région
 let lastCode = null // pays de la dernière fiche, pour rendre le focus à sa carte
 let cameFromList = false
+
+initTheme(document.querySelector('#theme'))
 
 const home = createHome({ onChange: (hash) => { listHash = hash } })
 const detail = createDetail()
