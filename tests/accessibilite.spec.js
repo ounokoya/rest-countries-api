@@ -4,34 +4,41 @@ import { open, loaded, search, countries, card, back, title, themeButton, border
 
 // Spec §6 — S28, S29, S30, S32, S33
 
-async function outlines(page, count) {
-  const seen = new Map()
-  for (let i = 0; i < count; i++) {
+// Parcours au Tab jusqu'au dernier élément (le focus revient au document ou au premier élément)
+async function outlines(page) {
+  const seen = []
+  for (let i = 0; i < 600; i++) {
     await page.keyboard.press('Tab')
     const info = await page.evaluate(() => {
       const el = document.activeElement
       if (!el || el === document.body) return null
+      if (!el.dataset.visited) el.dataset.visited = '1'
+      else return { again: true }
       const s = getComputedStyle(el)
       const label = (el.getAttribute('aria-label') || el.labels?.[0]?.textContent || el.textContent || el.tagName).trim().slice(0, 40)
       return { label, ok: (s.outlineStyle !== 'none' && parseFloat(s.outlineWidth) >= 2) || s.boxShadow !== 'none' }
     })
-    if (info && !seen.has(info.label)) seen.set(info.label, info.ok)
+    if (!info || info.again) break
+    seen.push(info)
   }
   return seen
 }
 
-test('S28 — accueil et fiche : chaque élément focalisé au clavier a un contour de 2 px au moins', async ({ page }) => {
+test('S28 — accueil et fiche : chaque élément focalisé au clavier, jusqu\'au dernier, a un contour de 2 px au moins', async ({ page }) => {
+  test.setTimeout(90_000)
   await open(page, 1440)
   await loaded(page)
-  const home = await outlines(page, 7)
+  const home = await outlines(page)
+  expect(home.length, 'accueil : thème, recherche, filtre et 250 cartes').toBeGreaterThanOrEqual(253)
   await page.goto('./#/country/BEL')
   await expect(title(page, 'Belgium')).toBeVisible()
-  await page.keyboard.press('Shift+Tab')
-  const detail = await outlines(page, 6)
+  // même document (route par l'adresse) : on efface les marques du premier parcours
+  await page.evaluate(() => { document.activeElement?.blur(); document.querySelectorAll('[data-visited]').forEach((el) => delete el.dataset.visited) })
+  const detail = await outlines(page)
+  expect(detail.length, 'fiche : Back, thème et 4 voisins').toBeGreaterThanOrEqual(6)
 
-  const all = new Map([...home, ...detail])
-  for (const [label, ok] of all) expect.soft(ok, `focus visible sur « ${label} »`).toBe(true)
-  expect(all.size).toBeGreaterThan(8)
+  const missing = [...home, ...detail].filter((x) => !x.ok).map((x) => x.label)
+  expect(missing).toEqual([])
 })
 
 async function tabUntil(page, locator, key = 'Tab', max = 15) {

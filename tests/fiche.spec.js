@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { open, loaded, search, countries, card, back, title, borders, chooseRegion, currentRegion } from './helpers.js'
+import { open, loaded, search, countries, card, back, title, borders, chooseRegion, currentRegion, DATA } from './helpers.js'
 
 // Spec §5 — S18 à S25 (données réelles de data.json)
 
@@ -21,12 +21,31 @@ test('S18 — clic sur Belgium : adresse, focus sur le titre, titre du document,
   expect(await borders(page).allTextContents()).toEqual(['France', 'Germany', 'Luxembourg', 'Netherlands'])
 })
 
-test('S19 — fiche de Belgium : clic sur « France » ouvre la fiche de France', async ({ page }) => {
-  await open(page, 1440, 1024, { path: './#/country/BEL' })
-  await borders(page).filter({ hasText: 'France' }).click()
+// Valeurs attendues d'une fiche, lues dans data.json (spec §2 ; « None » si absent : Q-B6, Q-B7)
+const byCode = new Map(DATA.map((c) => [c.alpha3Code, c]))
+const shown = (values) => {
+  const items = (Array.isArray(values) ? values : [values]).filter((v) => v !== undefined && v !== null && String(v).trim() !== '')
+  return items.length ? items.join(', ') : 'None'
+}
+const fields = (c) => [
+  ['Native Name', shown(c.nativeName)], ['Population', Number(c.population).toLocaleString('en-US')], ['Region', shown(c.region)],
+  ['Sub Region', shown(c.subregion)], ['Capital', shown(c.capital)], ['Top Level Domain', shown(c.topLevelDomain)],
+  ['Currencies', shown((c.currencies || []).map((x) => x.name))], ['Languages', shown((c.languages || []).map((x) => x.name))],
+]
+const escape = (text) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 
-  await expect(page).toHaveURL(/#\/country\/FRA$/)
-  await expect(title(page, 'France')).toBeFocused()
+test('S19 — fiche de Belgium : chaque voisin ouvre sa fiche, conforme à data.json', async ({ page }) => {
+  for (const code of byCode.get('BEL').borders) {
+    const country = byCode.get(code)
+    await open(page, 1440, 1024, { path: './#/country/BEL' })
+    await borders(page).filter({ hasText: country.name }).click()
+
+    await expect(page, country.name).toHaveURL(new RegExp(`#/country/${code}$`))
+    await expect(title(page, country.name)).toBeFocused()
+    for (const [label, value] of fields(country)) await expect.soft(main(page), `${country.name} : ${label}`).toContainText(new RegExp(`${label}:\\s*${escape(value)}`))
+    const expected = (country.borders || []).map((c) => byCode.get(c)?.name).filter(Boolean)
+    expect.soft(await borders(page).allTextContents(), `${country.name} : voisins`).toEqual(expected)
+  }
 })
 
 async function belgiumFromFilteredList(page) {

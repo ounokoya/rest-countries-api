@@ -138,7 +138,8 @@ Fiche et navigation
 S18 When je clique la carte Belgium  Then adresse #/country/BEL ; titre « Belgium » (h1) focalisé ; titre du document « Belgium · Where in the world? » ;
     image « Flag of Belgium » ; Native Name: België, Population: 11,858,610, Region: Europe, Sub Region: Western Europe, Capital: Brussels,
     Top Level Domain: .be, Currencies: Euro, Languages: Dutch, French, German ; voisins France, Germany, Luxembourg, Netherlands
-S19 Given la fiche de Belgium  When je clique « France »  Then fiche de France (#/country/FRA)
+S19 Given la fiche de Belgium  When je clique sur chacun de ses voisins  Then la bonne fiche (#/country/<code>), titre focalisé,
+    ses 8 champs et ses voisins conformes à data.json (v1.0.3, rapport IA R1)
 S20 Given « bel » et Europe, puis la fiche de Belgium  When « Back »  Then liste filtrée retrouvée (champ « bel », Europe, 2 cartes), focus sur la carte Belgium
 S21 Given la même situation  When retour du navigateur  Then même liste retrouvée
 S22 Given #/country/BEL ouvert directement  When « Back »  Then accueil complet (250 cartes)
@@ -151,7 +152,8 @@ S26 Given un appareil en thème sombre  Then fond Blue 950, « Dark Mode » enfo
 S27 Given thème clair  When « Dark Mode »  Then fond Blue 950, bouton enfoncé ; When je recharge  Then toujours sombre ; When « Dark Mode »  Then clair
 
 Accessibilité, HTML, performance
-S28 Given l'accueil et la fiche (1440)  When je parcours au Tab  Then chaque élément focalisé a un contour de 2 px au moins
+S28 Given l'accueil et la fiche (1440)  When je parcours au Tab jusqu'au dernier élément  Then chaque élément focalisé a un contour
+    de 2 px au moins (v1.0.3, rapport IA R2 : plus d'échantillon de 7 tabulations)
 S29 Given clavier seul  When Tab jusqu'au champ, « bel », Tab jusqu'à la carte Belgium, Entrée, Tab jusqu'à Back, Entrée  Then retour à la liste filtrée
 S30 Given accueil, liste filtrée vide, fiche, pays inconnu, erreur de chargement, en clair et en sombre (1440 et 375)  Then axe-core : aucune violation sérieuse ou critique
 S31 Given le HTML servi  Then validateur W3C Nu : aucune erreur

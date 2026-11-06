@@ -17,9 +17,9 @@ Carte de compétences du profil complétée (3 solutions relues) : **9,2 / 10**,
 
 | # | Partie | Remarque FM | Verdict | Proposition |
 |---|---|---|---|---|
-| R1 | Testing (« needs attention ») | La fiche n'est vérifiée que par le titre « Belgium » ; ni les champs ni les pays frontaliers ne sont testés | Juste | Tests : tous les champs de la fiche, clic sur chaque pays frontalier et arrivée sur la bonne fiche |
-| R2 | Testing (« needs attention ») | Le contour de focus n'est vérifié que sur les 7 premières tabulations | Juste (le portfolio parcourt déjà les 65 liens) | Tests : parcours complet au clavier de l'accueil et de la fiche |
-| R3 | Testing | Le bouton de thème n'est jamais cliqué ; la préférence gardée n'est pas vérifiée | Juste | Test : clic, changement visible, préférence retrouvée après rechargement |
+| R1 | Testing (« needs attention ») | La fiche n'est vérifiée que par le titre « Belgium » ; ni les champs ni les pays frontaliers ne sont testés | **En partie** : S18 (`fiche.spec.js`) vérifie déjà les 8 champs et la liste des voisins ; S19 ne suivait qu'un voisin (France) | S19 étendu : chaque voisin de Belgium ouvert, ses 8 champs et ses voisins comparés à `data.json` (vert d'emblée : test de garde) |
+| R2 | Testing (« needs attention ») | Le contour de focus n'est vérifié que sur les 7 premières tabulations | Juste | S28 : parcours au Tab jusqu'au dernier élément (accueil : 253 éléments ; fiche : 6) ; vert d'emblée : test de garde |
+| R3 | Testing | Le bouton de thème n'est jamais cliqué ; la préférence gardée n'est pas vérifiée | **Faux positif** : S27 (`theme.spec.js`) clique le bouton, vérifie le fond et retrouve le choix après rechargement | Aucune ; le rapport ne lit qu'une partie des fichiers (il citait `accessibilite.spec.js`) |
 | R4 | Best Practices | Démarrage en `.then().catch()` | Juste, mineur | `async` / `try … catch` dans `main.js` |
 | R5 | Architecture | `createHome` et `createRegionFilter` cherchent des id fixes dans `document` | Juste, mineur pour une page | Élément racine passé à chaque fabrique |
 | R6 | Architecture | `card()` mêle construction du DOM, chargement d'image et données | Juste, mineur | Fonction de rendu de carte séparée |
@@ -27,7 +27,7 @@ Carte de compétences du profil complétée (3 solutions relues) : **9,2 / 10**,
 | R8 | README | Une seule capture alors que le README décrit fiche, mobile et thème sombre | Juste | Ajouter 3 captures (fiche, mobile, sombre) |
 | R9 | Commits | Sujets au participe (« mis à jour », « regénéré ») plutôt qu'à l'impératif | Juste | Pour les prochains commits : sujets à l'impératif (changement de méthode, à valider) |
 
-Aucun faux positif. Les remarques R1 à R3 rejoignent la note la plus basse du profil (Testing 8,2) : ce sont les plus utiles pour les Guru.
+Un faux positif (R3) et une remarque en partie couverte (R1), vus en relisant les tests avant d'en écrire : le rapport IA n'examine qu'une partie du dépôt. Premier tri fait sans relire le dépôt : corrigé le 2026-11-06. R1 et R2 rejoignent la note la plus basse du profil (Testing 8,2).
 
 ## Suite (décision de Koya)
 
