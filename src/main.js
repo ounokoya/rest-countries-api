@@ -17,8 +17,8 @@ let cameFromList = false
 
 initTheme(document.querySelector('#theme'))
 
-const home = createHome({ onChange: (hash) => { listHash = hash } })
-const detail = createDetail()
+const home = createHome({ root: homeView, template: document.querySelector('#card-template'), onChange: (hash) => { listHash = hash } })
+const detail = createDetail({ root: detailView })
 
 // Back : retour d'historique quand on vient de la liste, sinon le lien mène à la dernière liste (Q4)
 document.querySelector('#back').addEventListener('click', (event) => {
@@ -51,14 +51,16 @@ function render(navigated) {
 
 window.addEventListener('hashchange', () => render(true))
 render(false)
-loadCountries()
-  .then((countries) => {
+// Démarrage : données chargées puis écran affiché, ou message d'erreur (rapport IA R4)
+async function start() {
+  try {
+    const countries = await loadCountries()
     home.setCountries(countries)
     detail.setCountries(countries)
     status = 'ready'
-    render(false)
-  })
-  .catch(() => {
+  } catch {
     status = 'error'
-    render(false)
-  })
+  }
+  render(false)
+}
+start()

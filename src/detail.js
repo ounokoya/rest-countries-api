@@ -6,14 +6,15 @@ import { showMessage } from './messages.js'
 
 const SITE = 'Where in the world?'
 
-export function createDetail() {
-  const article = document.querySelector('#country')
-  const message = document.querySelector('#detail-message')
-  const back = document.querySelector('#back')
-  const flag = document.querySelector('#country-flag')
-  const name = document.querySelector('#country-name')
-  const borders = document.querySelector('#borders')
-  const noBorders = document.querySelector('#no-borders')
+// root : la section de la fiche
+export function createDetail({ root }) {
+  const article = root.querySelector('#country')
+  const message = root.querySelector('#detail-message')
+  const back = root.querySelector('#back')
+  const flag = root.querySelector('#country-flag')
+  const name = root.querySelector('#country-name')
+  const borders = root.querySelector('#borders')
+  const noBorders = root.querySelector('#no-borders')
   let byCode = new Map()
 
   function neighbour(country) {

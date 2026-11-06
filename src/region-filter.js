@@ -3,11 +3,11 @@
 
 const PLACEHOLDER = 'Filter by Region'
 
-export function createRegionFilter({ onSelect }) {
-  const button = document.querySelector('#region')
-  const panel = document.querySelector('#regions')
-  const value = document.querySelector('#region-value')
-  const root = button.parentElement
+// root : le conteneur du filtre (bouton et liste)
+export function createRegionFilter({ root, onSelect }) {
+  const button = root.querySelector('#region')
+  const panel = root.querySelector('#regions')
+  const value = root.querySelector('#region-value')
   const radios = [...panel.querySelectorAll('input[type="radio"]')]
 
   const isOpen = () => button.getAttribute('aria-expanded') === 'true'

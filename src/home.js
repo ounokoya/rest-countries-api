@@ -1,36 +1,19 @@
 // Accueil : liste des pays, recherche, filtre, annonces (spec §5)
 
-import { formatNumber, list, normalize } from './data.js'
-import { detailHash, homeHash, replace } from './router.js'
+import { normalize } from './data.js'
+import { homeHash, replace } from './router.js'
 import { showMessage } from './messages.js'
 import { createRegionFilter } from './region-filter.js'
+import { createCard } from './card.js'
 
-const FIRST_SCREEN = 8 // drapeaux chargés tout de suite (ADR-0009)
-
-export function createHome({ onChange }) {
-  const listEl = document.querySelector('#countries')
-  const search = document.querySelector('#search')
-  const count = document.querySelector('#count')
-  const message = document.querySelector('#home-message')
-  const template = document.querySelector('#card-template')
+// root : la section de l'accueil ; template : le modèle de carte (rapport IA R5)
+export function createHome({ root, template, onChange }) {
+  const listEl = root.querySelector('#countries')
+  const search = root.querySelector('#search')
+  const count = root.querySelector('#count')
+  const message = root.querySelector('#home-message')
   let items = []
   let state = { search: '', region: '' }
-
-  function card(country, index) {
-    const li = template.content.firstElementChild.cloneNode(true)
-    const link = li.querySelector('a')
-    link.href = detailHash(country.alpha3Code)
-    const img = new Image(264, 160)
-    if (index >= FIRST_SCREEN) img.loading = 'lazy' // avant src : poser src lance aussitôt le téléchargement
-    img.alt = ''
-    img.decoding = 'async'
-    img.src = country.flags.svg
-    img.className = 'aspect-[264/160] h-auto w-full object-cover' // recadré : les drapeaux n'ont pas tous les mêmes proportions
-    li.querySelector('[data-slot="flag"]').append(img)
-    const values = { name: country.name, population: formatNumber(country.population), region: list(country.region), capital: list(country.capital) }
-    for (const field of li.querySelectorAll('[data-field]')) field.textContent = values[field.dataset.field]
-    return { li, link, code: country.alpha3Code, key: normalize(country.name), region: country.region }
-  }
 
   function render({ focusCode } = {}) {
     const query = normalize(state.search)
@@ -49,13 +32,13 @@ export function createHome({ onChange }) {
     onChange(hash)
     render()
   }
-  const regions = createRegionFilter({ onSelect: (region) => update({ region }) })
+  const regions = createRegionFilter({ root: root.querySelector('[data-region-filter]'), onSelect: (region) => update({ region }) })
   search.addEventListener('input', () => update({ search: search.value }))
 
   return {
     message,
     setCountries(countries) {
-      items = countries.map(card)
+      items = countries.map((country, index) => createCard(template, country, index))
     },
     show(route, options) {
       state = { search: route.search, region: route.region }
