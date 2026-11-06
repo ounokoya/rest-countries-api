@@ -29,7 +29,31 @@ Carte de compétences du profil complétée (3 solutions relues) : **9,2 / 10**,
 
 Un faux positif (R3) et une remarque en partie couverte (R1), vus en relisant les tests avant d'en écrire : le rapport IA n'examine qu'une partie du dépôt. Premier tri fait sans relire le dépôt : corrigé le 2026-11-06. R1 et R2 rejoignent la note la plus basse du profil (Testing 8,2).
 
+## v1.0.3 et rapport regénéré (2026-11-06, accord de Koya)
+
+v1.0.3 publiée (`main`, tag, `gh-pages`), 74 / 74 en ligne ; « Regenerate report » : **9,4 / 10**.
+
+| Partie | v1.0.2 | v1.0.3 |
+|---|---|---|
+| Global | 9,3 | **9,4** |
+| Best Practices | 9,4 | 9,6 (démarrage `async` relevé) |
+| Architecture | 9,2 | 9,2 (racines et `card.js` relevés, plus de remarque) |
+| Testing | 8,2 | 8,4 |
+| README | 9,6 | 9,8 |
+| File Organization · Accessibility · Commits | 9,2 · 9,3 · 9,6 | inchangés |
+
+Remarques restantes :
+
+| Remarque | Verdict |
+|---|---|
+| Fiche : champs et voisins non vérifiés | **Faux positif** : S18 et S19 (`fiche.spec.js`) ; le relecteur ne lit que `accessibilite.spec.js` |
+| Bouton de thème jamais cliqué | **Faux positif** : S27 (`theme.spec.js`) |
+| Noms de fichiers anglais et français (R7) | Juste ; règle appliquée aux prochains projets (SDL-FM 1.6.0) |
+| Sujets de commit au participe (R9) | Juste pour les anciens commits ; les nouveaux sont à l'impératif |
+
+Piste si Koya le souhaite (v1.0.4) : tests renommés en anglais et une carte des tests dans le README (quel fichier vérifie la fiche, le thème, le clavier), pour que le relecteur trouve S18, S19 et S27.
+
 ## Suite (décision de Koya)
 
-- Corriger REST Countries en v1.0.3 (R1 à R6, R8), puis « Regenerate report » ; ou garder ces remarques comme leçons pour les Guru.
+- ~~Corriger REST Countries en v1.0.3~~ : fait (voir ci-dessus).
 - R7 et R9 : changement de méthode (SDL-FM 1.6.0) présenté avec le plan de l'étape F.
