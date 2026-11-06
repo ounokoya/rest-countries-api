@@ -2,6 +2,17 @@
 
 Format : [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) · Versions : [SemVer](https://semver.org/lang/fr/).
 
+## [1.0.3] — 2026-11-06
+
+Suite du premier rapport IA FM (9,3 / 10, `specs/analyse/2026-11-06-rapport-ia.md`), avec l'accord de Koya ; SDL-FM 1.6.0.
+
+### Added
+- Tests de parcours complets : chaque voisin de Belgium ouvre la bonne fiche, ses 8 champs et ses voisins comparés à `data.json` (S19, R1) ; contour de focus vérifié jusqu'au dernier élément au clavier, 253 sur l'accueil (S28, R2).
+- README : captures de la fiche, du thème sombre et du mobile (R8).
+
+### Changed
+- `card.js` construit les cartes (R6) ; les modules reçoivent leur élément racine (R5) ; démarrage en `async` / `try … catch` (R4). Aucun changement visible : 74 tests sur 74.
+
 ## [1.0.2] — 2026-11-05
 
 Remarque R2 des vérifications automatiques de Frontend Mentor (`prefer-native-element`) : les règles de la plateforme s'imposent (décision de Koya).
