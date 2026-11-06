@@ -34,6 +34,10 @@ Users should be able to:
 
 ![Homepage on desktop, light theme](./screenshot.jpg)
 
+| Country page | Dark theme | Mobile |
+|---|---|---|
+| ![Belgium's country page on desktop, with its border countries](./screenshots/detail.jpg) | ![Homepage on desktop, dark theme](./screenshots/dark.jpg) | ![Homepage on mobile, 375 px](./screenshots/mobile.jpg) |
+
 ### Links
 
 - Solution URL: [frontendmentor.io/solutions/rest-countries-api-with-tailwind-v4-hash-routing-and-apg-combobox-vn9b1fV3r1](https://www.frontendmentor.io/solutions/rest-countries-api-with-tailwind-v4-hash-routing-and-apg-combobox-vn9b1fV3r1)
