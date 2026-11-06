@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Search the 250 countries of the REST Countries data, filter them by region and open each country's details, in a light or dark theme." />
+    <title>Frontend Mentor | REST Countries API with color theme switcher</title>
+    <link rel="icon" href="data:," />
+    <!-- ADR-0008 : thème posé avant le premier affichage (choix gardé, sinon thème de l'appareil) -->
+    <script>
+      try {
+        var saved = localStorage.getItem('theme')
+      } catch (e) {}
+      document.documentElement.dataset.theme = saved === 'dark' || saved === 'light' ? saved : matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+    </script>
+    <script type="module" crossorigin src="/rest-countries-api/assets/index-DntjlpcH.js"></script>
+    <link rel="stylesheet" crossorigin href="/rest-countries-api/assets/index-Dv7RC8i0.css">
+  </head>
+  <body class="bg-page font-sans text-text transition-colors duration-200 motion-reduce:transition-none">
+    <header class="relative z-20 bg-element shadow-header">
+      <div class="mx-auto flex h-20 max-w-[1440px] items-center justify-between px-4 md:px-12 lg:px-20">
+        <a href="#/" class="text-sm font-extrabold hover:underline md:text-2xl">Where in the world?</a>
+        <button type="button" id="theme" aria-pressed="false" class="flex items-center gap-[9.5px] text-xs font-semibold hover:underline md:gap-[9px] md:text-base">
+          <svg class="size-3.5 md:size-4 dark:hidden" viewBox="2.25 2.25 19.5 19.5" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          <svg class="hidden size-3.5 md:size-4 dark:block" viewBox="2.25 2.25 19.5 19.5" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" /></svg>
+          Dark Mode
+        </button>
+      </div>
+    </header>
+
+    <main class="mx-auto min-h-[calc(100dvh-80px)] max-w-[1440px] pb-16">
+      <section id="home" class="px-4 md:px-12 lg:px-20" aria-labelledby="countries-title">
+        <h1 id="countries-title" class="sr-only">Countries</h1>
+        <div class="flex flex-col gap-10 pt-6 md:flex-row md:justify-between md:gap-6 md:pt-12">
+          <div role="search" class="relative h-12 rounded-card bg-element shadow-soft md:h-14 md:flex-1 lg:w-[480px] lg:flex-none">
+            <label for="search" class="sr-only">Search for a country</label>
+            <svg class="pointer-events-none absolute top-1/2 left-8 size-4 -translate-y-1/2 text-placeholder md:size-[18px]" viewBox="1.75 1.75 20.5 20.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7.5" fill="none" stroke="currentColor" stroke-width="2.5" /><path d="M16 16l5 5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" /></svg>
+            <input id="search" type="search" autocomplete="off" placeholder="Search for a country…" class="size-full rounded-card bg-transparent pr-6 pl-[74px] text-xs font-light placeholder:text-placeholder md:text-sm" />
+          </div>
+          <div class="relative z-10 w-[200px]" data-region-filter>
+            <span id="region-label" hidden>Filter by Region</span>
+            <button type="button" id="region" aria-expanded="false" aria-controls="regions" aria-labelledby="region-value" class="flex h-12 w-full items-center justify-between rounded-card bg-element pr-5 pl-6 text-xs font-light shadow-soft md:h-14 md:text-sm">
+              <span id="region-value">Filter by Region</span>
+              <svg class="h-[5px] w-2 md:h-1.5 md:w-2.5" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            </button>
+            <fieldset id="regions" hidden class="absolute top-full left-0 mt-1 w-full rounded-card bg-element py-3 text-xs font-light shadow-soft md:text-sm">
+              <legend class="sr-only">Region</legend>
+              <label class="region"><input type="radio" name="region" value="" checked /> All regions</label>
+              <label class="region"><input type="radio" name="region" value="Africa" /> Africa</label>
+              <label class="region"><input type="radio" name="region" value="Americas" /> Americas</label>
+              <label class="region"><input type="radio" name="region" value="Asia" /> Asia</label>
+              <label class="region"><input type="radio" name="region" value="Europe" /> Europe</label>
+              <label class="region"><input type="radio" name="region" value="Oceania" /> Oceania</label>
+            </fieldset>
+          </div>
+        </div>
+
+        <p id="count" role="status" class="sr-only"></p>
+        <div id="home-message" class="mt-12" hidden></div>
+        <ul id="countries" aria-labelledby="countries-title" class="mt-8 grid grid-cols-[264px] justify-center gap-10 md:mt-12 md:grid-cols-2 md:gap-12 lg:grid-cols-3 lg:gap-[75px] xl:grid-cols-4"></ul>
+      </section>
+
+      <section id="detail" class="px-[27.5px] md:px-12 lg:px-20" hidden>
+        <a id="back" href="#/" class="mt-10 inline-flex h-8 w-[104px] items-center gap-[9.5px] rounded-back-mobile bg-element pl-[25px] text-sm font-light shadow-back transition-colors duration-200 hover:bg-hover motion-reduce:transition-none md:mt-20 md:h-10 md:w-[136px] md:gap-[11px] md:rounded-back md:pl-[33px] md:text-base">
+          <svg class="h-[11px] w-4 md:h-3 md:w-[18px]" viewBox="0 0 18 12" aria-hidden="true"><path d="M17 6H1.5M6.5 1L1.5 6l5 5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          Back
+        </a>
+        <div id="detail-message" class="mt-12" hidden></div>
+        <article id="country" class="mt-16 md:mt-20 lg:grid lg:grid-cols-[560fr_576fr] lg:items-center lg:gap-x-[min(10vw,144px)]" hidden>
+          <div id="country-flag" class="shadow-flag"></div>
+          <div class="mt-11 md:mt-[62.5px] lg:mt-0">
+            <h1 id="country-name" tabindex="-1" class="text-title-mobile leading-[30px] font-extrabold md:text-title md:leading-[44px]">Country</h1>
+            <div class="mt-[17px] flex flex-col gap-8 text-sm leading-8 md:mt-[23px] md:grid md:grid-cols-2 md:gap-12 md:text-base lg:flex lg:flex-row lg:flex-wrap lg:justify-between lg:gap-8">
+              <dl>
+                <div><dt class="inline font-semibold">Native Name:</dt> <dd class="inline font-light" data-field="nativeName"></dd></div>
+                <div><dt class="inline font-semibold">Population:</dt> <dd class="inline font-light" data-field="population"></dd></div>
+                <div><dt class="inline font-semibold">Region:</dt> <dd class="inline font-light" data-field="region"></dd></div>
+                <div><dt class="inline font-semibold">Sub Region:</dt> <dd class="inline font-light" data-field="subregion"></dd></div>
+                <div><dt class="inline font-semibold">Capital:</dt> <dd class="inline font-light" data-field="capital"></dd></div>
+              </dl>
+              <dl>
+                <div><dt class="inline font-semibold">Top Level Domain:</dt> <dd class="inline font-light" data-field="topLevelDomain"></dd></div>
+                <div><dt class="inline font-semibold">Currencies:</dt> <dd class="inline font-light" data-field="currencies"></dd></div>
+                <div><dt class="inline font-semibold">Languages:</dt> <dd class="inline font-light" data-field="languages"></dd></div>
+              </dl>
+            </div>
+            <div class="mt-[33px] md:mt-[69px] lg:flex lg:items-start lg:gap-4">
+              <h2 id="borders-title" class="text-base leading-6 font-semibold lg:shrink-0 lg:leading-7">Border Countries:</h2>
+              <ul id="borders" aria-labelledby="borders-title" class="mt-4 flex flex-wrap gap-[10px] lg:mt-0"></ul>
+              <p id="no-borders" class="mt-4 font-light lg:mt-0 lg:leading-7" hidden>None</p>
+            </div>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <footer class="px-4 py-6 text-center text-xs font-light">
+      Challenge by <a href="https://www.frontendmentor.io?ref=challenge" class="font-semibold underline">Frontend Mentor</a>.
+      Coded by <a href="https://www.frontendmentor.io/profile/ounokoya" class="font-semibold underline">Koya Esdras</a>.
+    </footer>
+
+    <template id="card-template">
+      <li>
+        <a href="#/" class="flex h-full flex-col overflow-hidden rounded-card bg-element shadow-soft transition-shadow duration-200 hover:shadow-hover motion-reduce:transition-none">
+          <div data-slot="flag"></div>
+          <div class="pt-[25px] pr-4 pb-[42px] pl-6">
+            <h2 class="text-lg leading-6 font-extrabold" data-field="name">Country</h2>
+            <dl class="mt-[13px] text-sm leading-6">
+              <div><dt class="inline font-semibold">Population:</dt> <dd class="inline font-light" data-field="population"></dd></div>
+              <div><dt class="inline font-semibold">Region:</dt> <dd class="inline font-light" data-field="region"></dd></div>
+              <div><dt class="inline font-semibold">Capital:</dt> <dd class="inline font-light" data-field="capital"></dd></div>
+            </dl>
+          </div>
+        </a>
+      </li>
+    </template>
+  </body>
+</html>
